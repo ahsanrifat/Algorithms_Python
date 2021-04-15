@@ -52,17 +52,19 @@ def traverse_bst(root_node: Node):
     traverse_bst(left_node)
 
 
+glob_x = None
+
+
 def find_closest_value_in_bst(parent_node: Node, target_value, closest_value):
     # closest value updating conditions
     if parent_node == None:
         print("Closest Value In The BST is->", closest_value)
-        answer = int(closest_value)
-        return answer
+        return closest_value
     elif closest_value == None:
         closest_value = parent_node.value
     elif abs(parent_node.value - target_value) < abs(target_value - closest_value):
-        target_parent_dif = abs(parent_node.value - target_value)
-        target_closest_dif = abs(target_value - closest_value)
+        # target_parent_dif = abs(parent_node.value - target_value)
+        # target_closest_dif = abs(target_value - closest_value)
         closest_value = parent_node.value
         # print(
         #     f"Target-parent->{target_parent_dif}, Target-closest->{target_closest_dif}, Closest->{closest_value}"
@@ -72,9 +74,26 @@ def find_closest_value_in_bst(parent_node: Node, target_value, closest_value):
         print("Closest Value In The BST is->", closest_value)
         return target_value
     elif target_value > parent_node.value:
-        find_closest_value_in_bst(parent_node.right_child, target_value, closest_value)
+        return find_closest_value_in_bst(
+            parent_node.right_child, target_value, closest_value
+        )
     elif target_value < parent_node.value:
-        find_closest_value_in_bst(parent_node.left_child, target_value, closest_value)
+        return find_closest_value_in_bst(
+            parent_node.left_child, target_value, closest_value
+        )
+
+
+def find_bst_branch_sums(current_node: Node, current_sum):
+    if current_node == None:
+        return
+    elif current_node.right_child == None and current_node.left_child == None:
+        current_sum = current_sum + current_node.value
+        print(f"Branch Ended.Node value->{current_node.value} sum->{current_sum}")
+        return
+    current_sum = current_sum + current_node.value
+    print(current_node.value, current_sum)
+    find_bst_branch_sums(current_node.left_child, current_sum)
+    find_bst_branch_sums(current_node.right_child, current_sum)
 
 
 input_list = [6, 12, 4, 5, 32, 33, 3, 96, 15, 20]
@@ -90,4 +109,6 @@ for value in input_list:
             # print(f"Inserting-----{value}-------")
             insert_child(root_node, value)
 # traverse_bst(root_node)
-find_closest_value_in_bst(root_node, 5, None)
+# res = find_closest_value_in_bst(root_node, 18, None)
+# print(res)
+find_bst_branch_sums(root_node, 0)
