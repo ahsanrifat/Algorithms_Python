@@ -16,20 +16,31 @@ class Solution(object):
         dual_value={
             "IV":4,
             "IX":9,
-            "XL":50,
+            "XL":40,
             "XC":90,
             "CD":400,
             "CM":900
         }
         sum=0
         char_list=list(s)
-        for count in range(len(char_list)-2):
-            dual_key=char_list[count]+char_list[count+1]
-            if dual_key in dual_value:
-                sum+=dual_value[dual_key]
-                char_list[count]=12
-                if count+1==len(char_list)-1:
-                    char_list[count+1]=12
-        for char in char_list:
-            sum+=single_value.get(char) or 0
-        return sum
+        while char_list:
+            if len(char_list)>=2:
+                dual_key=char_list[0]+char_list[1]
+                if dual_value.get(dual_key):
+                    sum+=dual_value[dual_key]
+                    del char_list[0]
+                    del char_list[0]
+                elif len(char_list)>0:
+                    sum+=single_value[char_list[0]]
+                    del char_list[0]
+            elif len(char_list)==1:
+                sum+=single_value[char_list[0]]
+                del char_list[0]
+            if len(char_list)==0:
+                return sum
+        
+       
+    
+if __name__=="__main__":
+    t=Solution().romanToInt("LVIII")
+    print(t)

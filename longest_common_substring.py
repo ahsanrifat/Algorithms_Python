@@ -1,5 +1,3 @@
-from hashlib import new
-
 nums1=list("ABCDXYZABCDDEF")
 nums2=list("ABCDQYZABCDDEMKK")
 
